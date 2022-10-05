@@ -3,6 +3,8 @@ import pytest
 
 from dao.movie import MovieDAO
 from dao.model.movie import Movie
+from dao.model.genre import Genre
+from dao.model.director import Director
 from service.movie import MovieService
 from setup_db import db
 
@@ -11,13 +13,14 @@ from setup_db import db
 def movie_dao():
     movie_dao = MovieDAO(db.session)
 
-    movie_1 = Movie(id=1, name='Attack_of_Titan', description='Hello_world', trailer='url', year=2015, rating=1000)
-    movie_2 = Movie(id=1, name='Attack_of_Titan2', description='Hello_world2', trailer='url2', year=2015, rating=1000)
-    movie_3 = Movie(id=1, name='Attack_of_Titan3', description='Hello_world3', trailer='url3', year=2015, rating=1000)
+    movie_1 = Movie(id=1, title='Attack_of_Titan', description='Hello_world', trailer='url', year=2015, rating=1000)
+
+    movie_2 = Movie(id=2, title='Attack_of_Titan2', description='Hello_world2', trailer='url2', year=2015, rating=1000)
+    movie_3 = Movie(id=3, title='Attack_of_Titan3', description='Hello_world3', trailer='url3', year=2015, rating=1000)
 
     movie_dao.get_one = MagicMock(return_value=movie_1)
     movie_dao.get_all = MagicMock(return_value=[movie_1, movie_2, movie_3])
-    movie_dao.create = MagicMock(return_value=Movie(id=1, name='Attack_of_Titan4', description='Hello_world4',
+    movie_dao.create = MagicMock(return_value=Movie(id=1, title='Attack_of_Titan4', description='Hello_world4',
                                                     trailer='url4', year=2015, rating=1000))
     movie_dao.delete = MagicMock()
     movie_dao.update = MagicMock()
@@ -51,7 +54,7 @@ class TestMovieService:
         assert movie.id is not None
 
     def test_delete(self):
-        movie = self.movie_service.delete(1)
+        movie = self.movie_service.delete(2)
         assert movie is None
 
     def test_update(self):
